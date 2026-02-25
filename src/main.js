@@ -6,7 +6,8 @@
  */
 function calculateSimpleRevenue(purchase, _product) {
     const discount =   1 - (purchase.discount / 100);
-    return purchase.sale_price * purchase.quantity * discount
+    const result =  purchase.sale_price * purchase.quantity * discount;
+    return Number(result.toFixed(2));
 }
 
 /**
@@ -83,8 +84,10 @@ function analyzeSalesData(data, options) {
         record.items.forEach(item => {
             const product = productIndex[item.sku]; 
             const cost = product.purchase_price * item.quantity;
+
             const revenue = options.calculateRevenue(item)
-            seller.revenue += revenue
+            seller.revenue = Number((seller.revenue + revenue).toFixed(2)) 
+
             const profit = revenue - cost;
             seller.profit += profit
             
