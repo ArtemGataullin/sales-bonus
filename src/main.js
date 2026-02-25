@@ -7,7 +7,7 @@
 function calculateSimpleRevenue(purchase, _product) {
     const discount =   1 - (purchase.discount / 100);
     const result =  purchase.sale_price * purchase.quantity * discount;
-    return Number(result.toFixed(2));
+    return result;
 }
 
 /**
@@ -78,18 +78,24 @@ function analyzeSalesData(data, options) {
         }
     }, {})
 
+    function calculateSimpleRevenueProfit(purchase, _product) {
+    const discount =   1 - (purchase.discount / 100);
+    const result =  purchase.sale_price * purchase.quantity * discount;
+    return Number((result).toFixed(2));
+}
+
     data.purchase_records.forEach(record => {
         const seller = sellerIndex[record.seller_id];
         seller.sales_count += 1;
         record.items.forEach(item => {
             const product = productIndex[item.sku]; 
             const cost = product.purchase_price * item.quantity;
-
-            const revenue = options.calculateRevenue(item)
-            seller.revenue = Number((seller.revenue + revenue).toFixed(2)) 
-
-            const profit = revenue - cost;
-            seller.profit += profit
+            const revenue = calculateSimpleRevenueProfit(item);
+            const revenueProfit = options.calculateRevenue(item);
+            const profit =  revenueProfit - cost;
+            
+            seller.revenue += revenue;
+            seller.profit += profit;
             
             if (!seller.products_sold[item.sku]) {
                 seller.products_sold[item.sku] = 0;
@@ -134,7 +140,7 @@ function analyzeSalesData(data, options) {
         profit: Number(seller.profit.toFixed(2)),
         sales_count: seller.sales_count,
         top_products: seller.top_products,
-        bonus: Number(seller.bonus.toFixed(2))
+        bonus: Number(seller.bonus.toFixed(2)),
     }))
 }
 
