@@ -94,6 +94,7 @@ function analyzeSalesData(data, options) {
             const revenueProfit = options.calculateRevenue(item);
             const profit =  revenueProfit - cost;
             
+            
             seller.revenue += revenue;
             seller.profit += profit;
             
