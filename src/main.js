@@ -19,7 +19,7 @@ function calculateSimpleRevenue(purchase, _product) {
 function calculateBonusByProfit(index, total, seller) {
     if (index === 0) {
         return seller.profit * 0.15;
-    } else if (index === 1 || index.seller === 2) {
+    } else if (index === 1 || index === 2) {
         return seller.profit * 0.10;
     } else if (index === total - 1) {
         return 0;
